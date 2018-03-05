@@ -25,7 +25,7 @@ public class LinkedList {
 		return size;
 	}
 	
-	//add number to beginning of list
+	//add number to beginning of list: O(1)
 	public void addFirst(int data){		
 		if (size == 0) add(data); //empty list condition
 		else {
@@ -36,7 +36,7 @@ public class LinkedList {
 		}
 	}
 	
-	//add number to end of list
+	//add number to end of list: O(1)
 	public void add(int data) {
 		Node newNode = new Node(data);
 		if (size == 0) head = newNode; //list currently empty, so update head to new element		
@@ -48,7 +48,7 @@ public class LinkedList {
 	}
 	
 	
-	//add number to specified index
+	//add number to specified index: O(n)
 	public void add(int index, int data) throws IndexOutOfBoundsException{
 		if (index < 0 || index > size){
 			throw new IndexOutOfBoundsException();
@@ -72,14 +72,14 @@ public class LinkedList {
 		
 	}
 	
-	//removes all numbers from list
+	//removes all numbers from list: O(1)
 	public void clear() {
 		this.head =  null;
 		this.tail = null;
 		this.size = 0;
 	}
 	
-	//returns a new list with same numbers in same order
+	//returns a new list with same numbers in same order: O(n)
 	public LinkedList clone() {
 		LinkedList newList =  new LinkedList();
 		Node current =  head;
@@ -92,7 +92,7 @@ public class LinkedList {
 		return newList;
 	}
 	
-	//search for number within list, O(n)
+	//search for number within list: O(n)
 	public boolean contains(int data) {
 		Node current = head;
 		while (current != null){
@@ -102,7 +102,7 @@ public class LinkedList {
 		return false;
 	}
 	
-	//returns first number in list, O(1)
+	//returns first number in list: O(1)
 	public int getFirst() throws NoSuchElementException{
 		if (size == 0){
 			throw new NoSuchElementException();
@@ -112,7 +112,7 @@ public class LinkedList {
 		}
 	}
 	
-	//returns last number in list
+	//returns last number in list: O(1)
 	public int getLast() throws NoSuchElementException {
 		if (size == 0) {
 			throw new NoSuchElementException();
@@ -122,7 +122,7 @@ public class LinkedList {
 		}
 	}
 	
-	//returns number at specified index
+	//returns number at specified index: O(n)
 	public int get(int index) throws IndexOutOfBoundsException{
 		if (index < 0 || index >= size){
 			throw new IndexOutOfBoundsException();
