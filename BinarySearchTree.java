@@ -240,6 +240,7 @@ public class BinarySearchTree {
 		}
 	}
 
+	//locates the maximum node in target node's left tree, removes that node and returns its value; replaces target nodes value 
 	private int getMaxFromLeft(TreeNode node, TreeNode parent) {
 		if (node.rightChild == null) {
 			parent.leftChild = node.leftChild;
