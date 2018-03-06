@@ -196,7 +196,7 @@ public class BinarySearchTree {
 	}
 
 	private boolean removeHelper(TreeNode current, TreeNode parent, int target) {
-		if (current == null) {
+		if (current == null) { //at this point, tree does not contain target
 			return false;
 		}
 		else if (target < current.data) {
