@@ -25,14 +25,12 @@ public class BinarySearchTree {
 	public BinarySearchTree() {
 		this.root = null;
 		this.size = 0;
-		System.out.println("Empty tree initialized");
 	}
 
 	// initialize tree with root
 	public BinarySearchTree(int root) {
 		this.root = new TreeNode(root);
 		this.size = 1;
-		System.out.println("Tree initialized with root only");
 	}
 
 	/*
@@ -43,12 +41,10 @@ public class BinarySearchTree {
 		if (nodes.length == 0) {
 			this.size = 0;
 			this.root = null;
-			System.out.println("Empty tree initialized");
 		} 
 		else if (nodes.length == 1) {
 			this.root = new TreeNode(nodes[0]);
 			this.size = 1;
-			System.out.println("Tree initialized with root only");
 		} 
 		else {
 			this.size = 0;
@@ -200,9 +196,10 @@ public class BinarySearchTree {
 	}
 
 	private boolean removeHelper(TreeNode current, TreeNode parent, int target) {
-		if (current == null)
+		if (current == null) {
 			return false;
-		if (target < current.data) {
+		}
+		else if (target < current.data) {
 			return removeHelper(current.leftChild, current, target);
 		} 
 		else if (target > current.data) {
