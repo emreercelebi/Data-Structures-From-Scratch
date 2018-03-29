@@ -3,10 +3,12 @@ Graph represented through adjacency sets.
 Example node representation:
 {node1 : {connected_node_1 : weight_1, connected_node_2 : weight_2, ... ,connected_node_n : weight_n}}
 """
+import math
+
 class Graph:
 
 	def __init__(self):
-		self.graph = {}
+		self.graph = {}		
 
 	def add_node(self, value):
 		if value not in self.graph:
@@ -41,10 +43,7 @@ class Graph:
 		visited = set()
 		distance = self.__get_path_helper(path, 0, visited, source, destination)
 		if distance:
-			result = []
-			result.append(path)
-			result.append(distance)
-			return result
+			return [path,distance]			
 		else:
 			return
 
@@ -63,7 +62,51 @@ class Graph:
 					if distance:
 						return distance
 					else:
-						current_path.pop()				
+						current_path.pop()
+
+
+	def dijkstra(self, source, destination):
+		"""
+		My implementation of dijkstra's shortest path algorithm to find the minimum weight
+		path between two nodes. Returns list with first item being the path as a list of nodes 
+		in order, and the second item being the total weight of the shortest path
+		"""
+		if source not in self.graph or destination not in self.graph:
+			return
+		shortest_paths = {}
+		visited = set()
+		predecessors = {}
+		for node in self.graph:
+			shortest_paths[node] = math.inf
+		shortest_paths[source] = 0
+		current_node = source
+		while len(visited) < len(self.graph):
+			for node in self.graph[current_node]:
+				if node not in visited:
+					if shortest_paths[current_node] + self.graph[current_node][node] < shortest_paths[node]:
+						shortest_paths[node] = shortest_paths[current_node] + self.graph[current_node][node]
+						predecessors[node] = current_node
+			visited.add(current_node)
+			next_node = None
+			for node in self.graph:
+				if node not in visited:
+					if next_node is None:
+						next_node = node
+					elif shortest_paths[node] < shortest_paths[next_node]:
+						next_node = node
+			current_node = next_node
+		if shortest_paths[destination] is math.inf:
+			return [[],math.inf]
+		stack = []
+		stack.append(destination)
+		current_node = destination
+		while predecessors.get(current_node, None) is not None:
+			current_node = predecessors.get(current_node, None)
+			stack.append(current_node)
+		path = []
+		for i in range(len(stack)):
+			path.append(stack.pop())
+		return [path,shortest_paths[destination]]
 
 
 class Directed_Graph(Graph):
@@ -72,6 +115,9 @@ class Directed_Graph(Graph):
 		super().__init__()
 
 	def add_edge(self, source, destination, weight):
+		#can't allow for negative weights, or else dijkstra won't work
+		if weight < 0:
+			return
 		#if source or destination are not already in graph, they are added
 		if source not in self.graph:
 			self.graph.update({source : {}})
@@ -96,6 +142,8 @@ class Undirected_Graph(Graph):
 		super().__init__()
 
 	def add_edge(self, source, destination, weight):
+		if weight < 0:
+			return
 		if source not in self.graph:
 			self.graph.update({source : {}})
 			print(source + " added to graph")
@@ -113,3 +161,30 @@ class Undirected_Graph(Graph):
 			#only need to search nodes that are in the target's adjacency list, since graph is undirected
 			for node in removed:
 				self.graph.get(node).pop(target, None)
+
+
+#sample undirected graph used for testing found at https://www.geeksforgeeks.org/wp-content/uploads/Fig-0.jpg 
+
+test_undirected_graph = Undirected_Graph()
+
+for i in range(9):
+	test_undirected_graph.add_node(i)
+
+test_undirected_graph.add_edge(0,1,4)
+test_undirected_graph.add_edge(0,7,8)
+test_undirected_graph.add_edge(1,7,11)
+test_undirected_graph.add_edge(7,8,7)
+test_undirected_graph.add_edge(7,6,1)
+test_undirected_graph.add_edge(1,2,8)
+test_undirected_graph.add_edge(2,8,2)
+test_undirected_graph.add_edge(8,6,6)
+test_undirected_graph.add_edge(6,5,2)
+test_undirected_graph.add_edge(2,5,4)
+test_undirected_graph.add_edge(2,3,7)
+test_undirected_graph.add_edge(3,5,14)
+test_undirected_graph.add_edge(3,4,9)
+test_undirected_graph.add_edge(5,4,10)
+
+print(test_undirected_graph.dijkstra(0,8))
+
+
